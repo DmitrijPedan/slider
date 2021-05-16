@@ -1,0 +1,21 @@
+{
+  "name": "animate-slider",
+  "version": "1.0.0",
+  "description": "custom animation slider",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "keywords": [
+    "javascript",
+    "animation",
+    "parcel"
+  ],
+  "author": "Dmitriy Pedan <dmitrijpedan84@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "sass": "^1.32.13"
+  }
+}

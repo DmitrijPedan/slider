@@ -1,0 +1,380 @@
+//  ====== SLIDER CONFIGS  ======
+body {
+  padding: 0;
+  margin: 0;
+}
+
+//font
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+//breakpoints
+$breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px);
+@mixin breakpoint-down($name) {
+  @media (max-width: (map-get($breakpoints, $name) - 0.02px)) { @content; }
+}
+@mixin breakpoint-up($name) {
+  @media (min-width: map-get($breakpoints, $name)) {  @content; }
+}
+//set variables
+:root {
+  --cd-slider-background-color: #ffffff;
+  --cd-slider-accent-color: #92c741;
+  --cd-slider-controls-color: #979797;
+  --cd-slider-square1-color: #92c741;
+  --cd-slider-square2-color: #cbe3a9;
+  --cd-slider-square3-color: #ddecc3;
+  --cd-slider-square-size: 10px;
+  @include breakpoint-up(sm) {
+    --cd-slider-square-size: 15px;
+  }
+  @include breakpoint-up(md) {
+    --cd-slider-square-size: 20px;
+  }
+  @include breakpoint-up(xl) {
+    --cd-slider-square-size: 25px;
+  }
+}
+
+//  ====== SLIDER STYLES  ======
+
+//  ====== slider  ======
+.cd-slider {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+//  ====== slides wrapper  ======
+.cd-wrapper {
+  .cd-slide:not(:first-of-type) {
+    display: none;
+  }
+}
+
+//  ====== slide  ======
+.cd-slide {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 65px; //padding for absolutely positioning controls
+  min-height: 45vw;
+  @include breakpoint-down(md) {
+    padding-bottom: 0;
+    min-height: 80vw;
+  }
+  @include breakpoint-down(sm) {
+    min-height: 100vw;
+  }
+  .cd-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    opacity: .9;
+    transform: scaleX(0);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-name: background-img;
+    animation-duration: .25s;
+    animation-timing-function: ease-in;
+    animation-delay: .25s;
+    animation-fill-mode: forwards;
+  }
+  .cd-content {
+    width: 100%;
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  animation-name: blur;
+  animation-duration: 1.3s;
+  animation-timing-function: ease-in;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes blur {
+  0% { -webkit-filter: blur(20px);}
+  50% { -webkit-filter: blur(3px);}
+  100% { -webkit-filter: blur(0px);}
+}
+
+@keyframes background-img {
+  0% { transform: scaleX(1.15) translateX(20%) }
+  100% { transform: scaleX(1) translateX(0) }
+}
+
+// ====== slide title  ======
+.cd-title-box {
+  width: 80%;
+  margin: 0 auto;
+  font-size: 9vw;
+  position: relative;
+  .cd-title {
+    mix-blend-mode: hard-light;
+    color: rgba(0,0,0, .8);
+    font-size: 1em;
+    text-transform: uppercase;
+    text-align: left;
+    font-weight: bold;
+    line-height: .8em;
+    margin: 0 0 0 auto;
+    span {
+      text-transform: none;
+      font-size: .6em;
+      display: block;
+    }
+    &:after {
+      z-index: -1;
+      content: '';
+      position: absolute;
+      right: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 200vw;
+      height: 300vh;
+      background-color: var(--cd-slider-background-color);
+      animation-name: background-title;
+      animation-duration: .6s;
+      animation-timing-function: linear;
+      animation-delay: 0s;
+      animation-fill-mode: forwards;
+      @include breakpoint-down(md) {
+        right: 60% !important;
+      }
+      @include breakpoint-down(sm) {
+        right: 70% !important;
+      }
+    }
+  }
+  @include breakpoint-down(md) {
+    margin: auto auto;
+  }
+}
+@keyframes background-title {
+  0% { right: 50% }
+  20% { right: 47% }
+  40% { right: 45% }
+  60% { right: 47% }
+  80% { right: 49% }
+  100% { right: 50% }
+}
+
+// ====== slide subtitle ======
+.cd-subtitle-box {
+  padding: 2vw 0 8vw 0;
+  width: 45%;
+  position: relative;
+  z-index: 100;
+  .cd-subtitle {
+    margin: 0;
+    padding-left: 5vw;
+    font-size: 1.5vw;
+    line-height: 1.3em;
+    opacity: 0;
+    animation-name: subtitle;
+    animation-duration: 1.8s;
+    animation-timing-function: ease-in;
+    animation-delay: 1.5s;
+    animation-fill-mode: forwards;
+  }
+  @include breakpoint-down(md) {
+    width: 100%;
+    background-color: var(--cd-slider-background-color);
+    padding: 20px 0 65px 0;
+    .cd-subtitle {
+      text-align: center;
+      font-size: 14px;
+      padding: 0 20px;
+    }
+  }
+}
+@keyframes subtitle {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+// ====== animated squares ======
+.cd-squares {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%);
+  width: calc(var(--cd-slider-square-size) * 4);
+  height: calc(var(--cd-slider-square-size) * 3);
+
+  @include breakpoint-down(lg) {
+    transform: translateY(-100%);
+  }
+
+  .square-1 {
+    background-color: var(--cd-slider-square1-color);
+    animation: square-1;
+    top: 66%;
+    left: 50%;
+  }
+  .square-2 {
+    background-color: var(--cd-slider-square2-color);
+    animation: square-2;
+    left: 0;
+    top: 33%;
+  }
+  .square-3 {
+    background-color: var(--cd-slider-square3-color);
+    animation: square-3;
+    right: 0;
+    top: 0;
+  }
+  .cd-square {
+    width: var(--cd-slider-square-size);
+    height: var(--cd-slider-square-size);
+    position: absolute;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-delay: 0;
+    animation-fill-mode: forwards;
+  }
+}
+@keyframes square-1 {
+  0%    { top: 66%; left: 50%; }
+  50%   { top: 45%; left: 25%; }
+  100%  { top: 33%; left: 0; }
+}
+@keyframes square-2 {
+  0%    { left: 0; top: 33%; }
+  20%   { left: 10%; top: 45%; }
+  40%   { left: 20%; top: 50%; }
+  60%   { left: 30%; top: 55%; }
+  80%   { left: 40%; top: 60%; }
+  100%  { left: 50%; top: 66%; }
+}
+@keyframes square-3 {
+  0%    { right: 0; top: 0; }
+  25%   { right: -15%; top: 10%; }
+  50%   { right: -30%; top: 20%; }
+  75%   { right: -15%; top: 10%; }
+  100%  { right: 0; top: 0; }
+}
+
+//  ====== slider controls  ======
+.cd-controls {
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 95%;
+  left: 50%;
+  bottom: 0;
+  height: 60px;
+  transform: translateX(-50%);
+}
+
+//  ====== controls points  ======
+.cd-points {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  .cd-point {
+    flex: 1 1 auto;
+    position: relative;
+    cursor: pointer;
+    height: 10px;
+    width: 3vw;
+    max-width: 40px;
+    margin: 0 10px;
+    @include breakpoint-down(sm) {
+      margin: 0 5px;
+    }
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 1px;
+      background-color: var(--cd-slider-controls-color);
+      transition: height .2s, background-color .3s;
+    }
+    &:hover {
+      &:before {
+        height: 3px;
+        background-color: var(--cd-slider-accent-color);
+      }
+    }
+  }
+  .cd-point.active-point:before {
+    height: 3px;
+    background-color: var(--cd-slider-accent-color);
+  }
+}
+
+//  ====== controls arrows  ======
+.cd-arrow.visible-arrow {
+  visibility: visible;
+}
+.cd-arrow {
+  visibility: hidden;
+  width: 75px;
+  height: 32px;
+  cursor: pointer;
+  position: relative;
+  @include breakpoint-down(md) {
+    display: none;
+  }
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    transition: background-color .3s, border-color .3s;
+  }
+  &:before {
+    width: 20px;
+    height: 20px;
+    top: 50%;
+  }
+  &:after {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--cd-slider-controls-color);
+  }
+  &:hover {
+    &:after {
+      background-color: var(--cd-slider-accent-color);
+    }
+    &:before {
+      border-color: var(--cd-slider-accent-color)!important;
+    }
+  }
+}
+//  ====== prev arrow  ======
+.cd-arrow.cd-prev {
+  &:before {
+    left: 0;
+    border-top: 2px solid var(--cd-slider-controls-color);
+    border-left: 2px solid var(--cd-slider-controls-color);
+    transform-origin: 0 0;
+    transform: rotate(-45deg);
+  }
+}
+//  ====== next arrow  ======
+.cd-arrow.cd-next {
+  &:before {
+    right: 0;
+    border-top: 2px solid var(--cd-slider-controls-color);
+    border-right: 2px solid var(--cd-slider-controls-color);
+    transform-origin: 100% 0;
+    transform: rotate(45deg);
+  }
+}
+
