@@ -1,10 +1,12 @@
-export default  class CdSlider {
+export default class CdSlider {
 
   options = {
     autoInit: false,
     enableAutoplay: true,
     enableLoop: true,
     interval: 5000,
+    titleSize: 9,
+    maxTitleSize: 12,
     slideClassName: 'cd-slide',
     pointClassName: 'cd-point',
     activePointClassname: 'active-point',
@@ -12,10 +14,10 @@ export default  class CdSlider {
     prevClassName: 'cd-prev',
   }
 
-  points = [];
   currentSlide = 1;
-  timer = null;
+  points = [];
   errors = [];
+  timer = null;
 
   constructor(sliderSelector, options) {
     if (!sliderSelector) {
@@ -41,6 +43,7 @@ export default  class CdSlider {
       return;
     }
     this.getElementsFromDOM();
+    this.changeTitleSize();
     this.setActiveSlide();
     this.showControls();
     this.setActivePoint();
@@ -55,13 +58,17 @@ export default  class CdSlider {
   getElementsFromDOM() {
     this.pointsContainer = this.slider.querySelector('.cd-points');
     this.slides = [...this.slider.getElementsByClassName(this.options.slideClassName)];
+    this.titles = [...this.slider.getElementsByClassName('cd-title-box')];
+    this.squares = this.slider.querySelector('.cd-squares');
     this.nextButton = this.slider.querySelector('.' + this.options.nextClassName);
     this.prevButton = this.slider.querySelector('.' + this.options.prevClassName);
   }
 
   setActiveSlide() {
     if (this.slides.length) {
+      this.squares.classList.remove('animated-squares');
       this.slides.forEach((slide, i) => slide.style.display = (i + 1) === this.currentSlide ? 'flex' : 'none');
+      this.changeTitleSize();
     }
   }
 
@@ -129,7 +136,7 @@ export default  class CdSlider {
 
   createSliderPoints() {
     this.slides.forEach((slide, i) => {
-      let point = document.createElement('span');
+      const point = document.createElement('span');
       point.classList.add(this.options.pointClassName);
       point.title = `Go to slide ${i + 1}`;
       point.setAttribute('data-slide', (i + 1).toString());
@@ -137,6 +144,18 @@ export default  class CdSlider {
       this.points.push(point);
       this.pointsContainer.appendChild(point);
     })
+  }
+
+  changeTitleSize() {
+    const title = this.titles[this.currentSlide - 1].querySelector('.cd-title');
+    const percent = this.titles[this.currentSlide - 1].clientWidth / title.clientWidth;
+    const newSize = this.options.titleSize * percent < this.options.maxTitleSize
+      ? this.options.titleSize * percent
+      : this.options.maxTitleSize;
+    this.titles.forEach((el, i) => el.style.fontSize = i === this.currentSlide - 1 ? newSize + 'vw' : this.options.titleSize + 'vw');
+    this.squares.classList.add('animated-squares');
+    this.squares.style.top = title.getBoundingClientRect().top.toString() + 'px';
+    this.squares.style.left = title.getBoundingClientRect().left.toString() + 'px';
   }
 
   setAutoPlay() {
@@ -151,6 +170,7 @@ export default  class CdSlider {
       this.setAutoPlay();
     }
   }
+
 }
 
 
@@ -160,8 +180,3 @@ const slider = new CdSlider('#homePageSlider', {
 });
 
 slider.init();
-
-
-
-
-

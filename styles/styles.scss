@@ -117,8 +117,10 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   font-size: 9vw;
   position: relative;
   .cd-title {
-    mix-blend-mode: hard-light;
-    color: rgba(0,0,0, .8);
+    display: inline-block;
+    //mix-blend-mode: hard-light;
+    mix-blend-mode: lighten;
+    color: rgba(0,0,0, .9);
     font-size: 1em;
     text-transform: uppercase;
     text-align: left;
@@ -175,7 +177,7 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   .cd-subtitle {
     margin: 0;
     padding-left: 5vw;
-    font-size: 1.5vw;
+    font-size: 1.3vw;
     line-height: 1.3em;
     opacity: 0;
     animation-name: subtitle;
@@ -204,30 +206,26 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
 .cd-squares {
   position: absolute;
   left: 0;
-  top: 0;
+  top: 50%;
   transform: translateX(-100%);
   width: calc(var(--cd-slider-square-size) * 4);
   height: calc(var(--cd-slider-square-size) * 3);
-
+  transition: all .3s;
   @include breakpoint-down(lg) {
     transform: translateY(-100%);
   }
-
   .square-1 {
     background-color: var(--cd-slider-square1-color);
-    animation: square-1;
     top: 66%;
     left: 50%;
   }
   .square-2 {
     background-color: var(--cd-slider-square2-color);
-    animation: square-2;
     left: 0;
     top: 33%;
   }
   .square-3 {
     background-color: var(--cd-slider-square3-color);
-    animation: square-3;
     right: 0;
     top: 0;
   }
@@ -235,12 +233,27 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
     width: var(--cd-slider-square-size);
     height: var(--cd-slider-square-size);
     position: absolute;
+  }
+}
+
+.cd-squares.animated-squares {
+  .square-1 {
+    animation: square-1;
+  }
+  .square-2 {
+    animation: square-2;
+  }
+  .square-3 {
+    animation: square-3;
+  }
+  .cd-square {
     animation-duration: 1.5s;
     animation-timing-function: linear;
-    animation-delay: 0;
+    animation-delay: 0s;
     animation-fill-mode: forwards;
   }
 }
+
 @keyframes square-1 {
   0%    { top: 66%; left: 50%; }
   50%   { top: 45%; left: 25%; }
