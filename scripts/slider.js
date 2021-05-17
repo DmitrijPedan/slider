@@ -66,7 +66,7 @@ export default class CdSlider {
 
   setActiveSlide() {
     if (this.slides.length) {
-      this.squares.classList.remove('animated-squares');
+      this.switchSquaresAnimateClassName();
       this.slides.forEach((slide, i) => slide.style.display = (i + 1) === this.currentSlide ? 'flex' : 'none');
       this.changeTitleSize();
     }
@@ -86,6 +86,7 @@ export default class CdSlider {
     this.prevButton.addEventListener('click', () => this.prev());
     this.slider.addEventListener("touchstart", (event) => this.handleStart(event), false);
     this.slider.addEventListener("touchend", (event) => this.handleEnd(event), false);
+    window.addEventListener('resize', () => this.setSquaresPosition());
   }
 
   handleStart(event) {
@@ -153,7 +154,25 @@ export default class CdSlider {
       ? this.options.titleSize * percent
       : this.options.maxTitleSize;
     this.titles.forEach((el, i) => el.style.fontSize = i === this.currentSlide - 1 ? newSize + 'vw' : this.options.titleSize + 'vw');
-    this.squares.classList.add('animated-squares');
+    this.setSquaresPosition();
+  }
+
+  switchSquaresAnimateClassName() {
+    if (this.squares.classList.contains('animated-forward')) {
+      this.squares.classList.remove('animated-forward');
+      this.squares.classList.add('animated-back');
+    }
+    else if (this.squares.classList.contains('animated-back')) {
+      this.squares.classList.remove('animated-back');
+      this.squares.classList.add('animated-forward');
+    }
+    else {
+      this.squares.classList.add('animated-forward');
+    }
+  }
+
+  setSquaresPosition() {
+    const title = this.titles[this.currentSlide - 1].querySelector('.cd-title');
     this.squares.style.top = title.getBoundingClientRect().top.toString() + 'px';
     this.squares.style.left = title.getBoundingClientRect().left.toString() + 'px';
   }

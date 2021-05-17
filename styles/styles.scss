@@ -27,11 +27,11 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   @include breakpoint-up(sm) {
     --cd-slider-square-size: 15px;
   }
-  @include breakpoint-up(md) {
-    --cd-slider-square-size: 20px;
+  @include breakpoint-up(lg) {
+    --cd-slider-square-size: 18px;
   }
   @include breakpoint-up(xl) {
-    --cd-slider-square-size: 25px;
+    --cd-slider-square-size: 22px;
   }
 }
 
@@ -59,7 +59,7 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   overflow: hidden;
   position: relative;
   padding-bottom: 65px; //padding for absolutely positioning controls
-  min-height: 45vw;
+  min-height: 40vw;
   @include breakpoint-down(md) {
     padding-bottom: 0;
     min-height: 80vw;
@@ -116,6 +116,10 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   margin: 0 auto;
   font-size: 9vw;
   position: relative;
+  //padding for squares
+  @include breakpoint-down(md) {
+    padding-top: calc(var(--cd-slider-square-size) * 2);
+  }
   .cd-title {
     display: inline-block;
     //mix-blend-mode: hard-light;
@@ -131,6 +135,10 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
       text-transform: none;
       font-size: .6em;
       display: block;
+    }
+    //margin for squares
+    @include breakpoint-down(md) {
+      margin-top: calc(var(--cd-slider-square-size) * 3);
     }
     &:after {
       z-index: -1;
@@ -205,13 +213,13 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
 // ====== animated squares ======
 .cd-squares {
   position: absolute;
-  left: 0;
-  top: 50%;
+  left: 10%;
+  top: 30%;
   transform: translateX(-100%);
   width: calc(var(--cd-slider-square-size) * 4);
   height: calc(var(--cd-slider-square-size) * 3);
-  transition: all .3s;
-  @include breakpoint-down(lg) {
+  transition: all .8s;
+  @include breakpoint-down(md) {
     transform: translateY(-100%);
   }
   .square-1 {
@@ -236,16 +244,30 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   }
 }
 
-.cd-squares.animated-squares {
+.cd-squares.animated-forward {
   .square-1 {
-    animation: square-1;
+    animation: square-1-f;
   }
   .square-2 {
-    animation: square-2;
+    animation: square-2-f;
   }
   .square-3 {
-    animation: square-3;
+    animation: square-3-f;
   }
+}
+.cd-squares.animated-back {
+  .square-1 {
+    animation: square-1-b;
+  }
+  .square-2 {
+    animation: square-2-b;
+  }
+  .square-3 {
+    animation: square-3-b;
+  }
+}
+.cd-squares.animated-forward,
+.cd-squares.animated-back {
   .cd-square {
     animation-duration: 1.5s;
     animation-timing-function: linear;
@@ -254,25 +276,34 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   }
 }
 
-@keyframes square-1 {
+@keyframes square-1-f {
   0%    { top: 66%; left: 50%; }
   50%   { top: 45%; left: 25%; }
   100%  { top: 33%; left: 0; }
 }
-@keyframes square-2 {
-  0%    { left: 0; top: 33%; }
-  20%   { left: 10%; top: 45%; }
-  40%   { left: 20%; top: 50%; }
-  60%   { left: 30%; top: 55%; }
-  80%   { left: 40%; top: 60%; }
-  100%  { left: 50%; top: 66%; }
+@keyframes square-2-f {
+  from { transform: rotate(0deg) translateX(0%) translateY(0%) rotate(0deg) }
+  to   { transform: rotate(-360deg) translateX(150%) translateY(100%) rotate(360deg) }
 }
-@keyframes square-3 {
-  0%    { right: 0; top: 0; }
-  25%   { right: -15%; top: 10%; }
-  50%   { right: -30%; top: 20%; }
-  75%   { right: -15%; top: 10%; }
-  100%  { right: 0; top: 0; }
+@keyframes square-3-f {
+  0% { transform: rotate(0deg) translateX(0%) translateY(0%) rotate(0deg) }
+  50% { transform: rotate(180deg) translateX(-100%) translateY(-200%) rotate(-180deg) }
+  100%   { transform: rotate(360deg) translateX(0%) translateY(0%) rotate(-360deg) }
+}
+
+@keyframes square-1-b {
+  0%  { top: 33%; left: 0; }
+  50%   { top: 45%; left: 25%; }
+  100%    { top: 66%; left: 50%; }
+}
+@keyframes square-2-b {
+  from   { transform: rotate(-360deg) translateX(150%) translateY(100%) rotate(360deg) }
+  to { transform: rotate(0deg) translateX(0%) translateY(0%) rotate(0deg) }
+}
+@keyframes square-3-b {
+  0%   { transform: rotate(360deg) translateX(0%) translateY(0%) rotate(-360deg) }
+  50% { transform: rotate(180deg) translateX(-100%) translateY(-200%) rotate(-180deg) }
+  100% { transform: rotate(0deg) translateX(0%) translateY(0%) rotate(0deg) }
 }
 
 //  ====== slider controls  ======
