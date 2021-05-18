@@ -60,6 +60,7 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   position: relative;
   padding-bottom: 65px; //padding for absolutely positioning controls
   min-height: 40vw;
+  //max-height: 700px;
   @include breakpoint-down(md) {
     padding-bottom: 0;
     min-height: 80vw;
@@ -178,7 +179,8 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
 
 // ====== slide subtitle ======
 .cd-subtitle-box {
-  padding: 2vw 0 8vw 0;
+  //padding: 2vw 0 8vw 0;
+  padding: 30px 0 40px 0;
   width: 45%;
   position: relative;
   z-index: 100;
@@ -193,6 +195,9 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
     animation-timing-function: ease-in;
     animation-delay: 1.5s;
     animation-fill-mode: forwards;
+  }
+  @include breakpoint-down(xl) {
+    padding: 20px 0 30px 0;
   }
   @include breakpoint-down(md) {
     width: 100%;
