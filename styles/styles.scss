@@ -123,9 +123,10 @@ $breakpoints: (xs: 100px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
   }
   .cd-title {
     display: inline-block;
-    //mix-blend-mode: hard-light;
-    mix-blend-mode: lighten;
-    color: rgba(0,0,0, .9);
+    //mix-blend-mode: lighten;
+    //color: rgba(0,0,0, .9);
+    mix-blend-mode: hard-light;
+    color: rgba(0,0,0, .65);
     font-size: 1em;
     text-transform: uppercase;
     text-align: left;
